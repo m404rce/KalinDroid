@@ -21,6 +21,12 @@ mkdir -p "$BUILD/gen" "$BUILD/classes" "$BUILD/dex" \
 chmod 700 "$KEYDIR"
 
 if [ ! -f "$KEYSTORE" ]; then
+    if [ "${ALLOW_NEW_KEY:-0}" != "1" ]; then
+        echo "Falta $KEYSTORE" >&2
+        echo "Restaura .keys/ desde tu copia segura." >&2
+        echo "Para crear una clave nueva de desarrollo: ALLOW_NEW_KEY=1 ./build.sh" >&2
+        exit 1
+    fi
     PASS="$(head -c 32 /dev/urandom | base64 | tr -dc 'A-Za-z0-9' | head -c 24)"
     printf '%s\n' "$PASS" > "$PASSFILE"
     chmod 600 "$PASSFILE"
@@ -37,6 +43,10 @@ if [ ! -f "$KEYSTORE" ]; then
     chmod 600 "$KEYSTORE"
 fi
 
+[ -f "$PASSFILE" ] || {
+    echo "Falta $PASSFILE; restaura .keys/ completo desde tu copia segura." >&2
+    exit 1
+}
 PASS="$(cat "$PASSFILE")"
 
 JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")"
