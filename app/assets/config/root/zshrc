@@ -1,0 +1,41 @@
+# KalinDroid · Kali Linux on Android
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+export TERM="${TERM:-xterm-256color}"
+export EDITOR="${EDITOR:-nano}"
+
+if [ -f /etc/profile ]; then
+    . /etc/profile
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=10000
+
+setopt autocd
+setopt interactivecomments
+setopt nonomatch
+setopt notify
+setopt promptsubst
+setopt hist_ignore_dups
+setopt append_history
+unsetopt beep 2>/dev/null
+
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias grep='grep --color=auto'
+alias ip='ip --color=auto'
+
+PROMPT='%F{green}┌──(%F{red}root%F{white}@%F{blue}kali%F{green})-[%F{yellow}%~%F{green}]
+└─%F{red}# %f'
+RPROMPT='%F{cyan}%*%f'
+
+if [ -z "${KALINDROID_BANNER:-}" ]; then
+    export KALINDROID_BANNER=1
+    printf '\033[1;35m'
+    printf '  KalinDroid  ·  Kali Linux (arm64 / proot / no root)\n'
+    printf '\033[0m'
+    printf '  Escribe \033[1;36mexit\033[0m para volver a KalinDroid.\n\n'
+fi

@@ -1,0 +1,26 @@
+# KalinDroid · bash fallback
+case $- in
+    *i*) ;;
+    *) return ;;
+esac
+
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+export TERM="${TERM:-xterm-256color}"
+
+if [ -f /etc/profile ]; then
+    . /etc/profile
+fi
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export HISTFILE="$HOME/.bash_history"
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+shopt -s histappend checkwinsize 2>/dev/null
+
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+alias la='ls -A --color=auto'
+alias grep='grep --color=auto'
+
+PS1='\[\e[1;32m\]┌──(\[\e[1;31m\]root\[\e[0m\]@\[\e[1;34m\]kali\[\e[1;32m\])-[\[\e[1;33m\]\w\[\e[1;32m\]]\n\[\e[1;32m\]└─\[\e[1;31m\]# \[\e[0m\]'

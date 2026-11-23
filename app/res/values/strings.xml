@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KalinDroid</string>
+    <string name="install_channel">Instalación de Kali</string>
+    <string name="install_channel_desc">Descarga y extracción de la imagen de Kali</string>
+</resources>

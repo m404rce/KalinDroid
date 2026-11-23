@@ -1,0 +1,23 @@
+# Secretos y firma
+.keys/
+keys/
+*.jks
+*.keystore
+*.p12
+password
+.git-credentials
+
+# Build y herramientas locales
+build/
+.tools/
+app/libs/arm64-v8a/libpty.so
+*.apk
+*.aab
+*.idsig
+*.log
+tmp/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.swp
