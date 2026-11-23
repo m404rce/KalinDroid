@@ -16,7 +16,8 @@ done
 [ -f "$ANDROID_JAR" ] || { echo "Falta $ANDROID_JAR"; exit 1; }
 
 rm -rf "$BUILD"
-mkdir -p "$BUILD/gen" "$BUILD/classes" "$BUILD/dex" "$BUILD/apk/lib/arm64-v8a" "$KEYDIR"
+mkdir -p "$BUILD/gen" "$BUILD/classes" "$BUILD/dex" \
+    "$BUILD/native/arm64-v8a" "$BUILD/apk/lib/arm64-v8a" "$KEYDIR"
 chmod 700 "$KEYDIR"
 
 if [ ! -f "$KEYSTORE" ]; then
@@ -42,7 +43,7 @@ JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v javac)")")")"
 echo "[0/6] Nativo"
 clang --target=aarch64-linux-android24 -shared -fPIC -O2 \
     -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" \
-    -o "$ROOT/app/libs/arm64-v8a/libpty.so" \
+    -o "$BUILD/native/arm64-v8a/libpty.so" \
     "$ROOT/app/jni/pty.c" -llog -ldl -pthread
 
 echo "[1/6] Recursos"
@@ -75,7 +76,7 @@ d8 --min-api 26 --lib "$ANDROID_JAR" --output "$BUILD/dex" "${CLASS_FILES[@]}"
 echo "[5/6] Empaquetando"
 cp "$BUILD/unsigned.apk" "$BUILD/unaligned.apk"
 cp "$BUILD/dex/classes.dex" "$BUILD/apk/classes.dex"
-cp "$ROOT/app/libs/arm64-v8a/libpty.so" "$BUILD/apk/lib/arm64-v8a/libpty.so"
+cp "$BUILD/native/arm64-v8a/libpty.so" "$BUILD/apk/lib/arm64-v8a/libpty.so"
 (cd "$BUILD/apk" && zip -q -r "$BUILD/unaligned.apk" classes.dex lib)
 
 echo "[6/6] Firmando"
